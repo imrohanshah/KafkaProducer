@@ -33,16 +33,7 @@ public class UserController {
             ObjectMapper mapper = new ObjectMapper();
             String userAsString = mapper.writeValueAsString(user);
             ProducerRecord<String, String> record = new ProducerRecord<String, String>("MyTopic", userAsString);
-            producer.send(record, new Callback() {
-                @Override
-                public void onCompletion(RecordMetadata metadata, Exception exception) {
-                    if (exception == null) {
-                        System.out.println("No exceptions");
-                    } else {
-                        System.out.println("Exception while sending");
-                    }
-                }
-            });
+            producer.send(record);
         } finally {
             producer.close();
         }
