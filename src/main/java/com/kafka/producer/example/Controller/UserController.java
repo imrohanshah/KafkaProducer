@@ -23,20 +23,6 @@ public class UserController {
 
     @PostMapping("/save")
     public String saveUser(@RequestBody User user) throws JsonProcessingException {
-        Properties properties = new Properties();
-        properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
-        properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-        properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-
-        KafkaProducer<String, String> producer = new KafkaProducer<String, String>(properties);
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            String userAsString = mapper.writeValueAsString(user);
-            ProducerRecord<String, String> record = new ProducerRecord<String, String>("MyTopic", userAsString);
-            producer.send(record);
-        } finally {
-            producer.close();
-        }
-        return user.getName();
+        return userService.savingUser(user);
     }
 }
